@@ -10,13 +10,18 @@ public class ChangeWard extends DomainEvent {
     private String patientId;
     private String ward;
 
+    public ChangeWard()
+    {
+        super();
+    }
+
     public ChangeWard(String topic) {
         super(TopicHolder.TOPIC_CHANGE_WARD);
     }
 
-    public ChangeWard(String patientId,String ward) {
+    public ChangeWard(String patientId, String ward) {
         super(TopicHolder.TOPIC_CHANGE_WARD);
-        this.patientId =patientId;
-        this.ward=ward;
+        this.patientId = patientId;
+        this.ward = ward;
     }
 }

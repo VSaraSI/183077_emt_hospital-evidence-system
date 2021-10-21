@@ -9,97 +9,71 @@ import com.example.patient.domain.valueobjects.NurseId;
 import com.example.patient.services.PatientService;
 import com.example.patient.services.form.PatientForm;
 import com.example.shared_kernel.domain.ward.Ward;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
 
-    //metod za vlecenje na site pacienti
+    public PatientServiceImpl(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
     @Override
     public List<Patient> getAll() {
         return patientRepository.findAll();
     }
 
-
-
-    @Override
-    public Patient findById(PatientId id) {
-        return patientRepository.findById(id)
-                .orElseThrow(PatientNotFoundException::new);
+    public <Optional>Patient findById(String id) {
+        PatientId patientId=PatientId.convertByString(id);
+        return patientRepository.findById(patientId).orElseThrow(PatientNotFoundException::new);
     }
 
-
-    //metod za dodavanje na pacient
     @Override
     public Patient addPatient(PatientForm form) {
-        Patient patient=Patient.build(form.getName(),form.getAddress(),form.getTeleph_num(),form.getWard(),
-                form.getDoctor().getId(),form.getNurse().getId());
+        Patient patient=new Patient(form.getName(),
+                form.getAddress(),
+                form.getTelephone(),
+                form.getWard(),
+                form.getDoctorId(),
+                form.getNurseId());
         patientRepository.save(patient);
         return patient;
     }
 
-    //metod za brishenje na pacient
     @Override
-    public void deletePatient(PatientId id) {
-        Patient patient=patientRepository.findById(id)
+    public void deletePatient(String id) {
+        PatientId patientId=PatientId.convertByString(id);
+        System.out.println(patientId);
+        Patient patient=patientRepository.findById(patientId)
                 .orElseThrow(PatientNotFoundException::new);
-        patientRepository.deleteById(id);
+        patientRepository.deleteById(patientId);
     }
 
-    //metod za promena na doktor na daden pacient
     @Override
-    public Patient changeDoctor(PatientId id, DoctorId newDoctor) {
-        Patient patient=patientRepository.findById(id)
+    public Patient changeDoctorOrNurse(String id, PatientForm patientForm) {
+        Patient patient=patientRepository.findById(PatientId.of(id))
                 .orElseThrow(PatientNotFoundException::new);
-        Patient patient1=
-                Patient.build(patient.getName(),
-                        patient.getAddress(),
-                        patient.getTeleph_num(),
-                        patient.getWard(),
-                        newDoctor, patient.getNurseId());
-        patientRepository.deleteById(patient.getId());
-        patientRepository.save(patient1);
-        return patient1;
+        patient.changeDoctor(patientForm.getDoctorId());
+        patient.changeNurse(patientForm.getNurseId());
+        patientRepository.saveAndFlush(patient);
+        return patient;
     }
 
-    //metod za promena na med.sestra na odreden pacient
-    @Override
-    public Patient changeNurse(PatientId id, NurseId newNurse) {
-        Patient patient=patientRepository.findById(id)
-                .orElseThrow(PatientNotFoundException::new);
-        Patient patient1=
-                Patient.build(patient.getName(),
-                        patient.getAddress(),
-                        patient.getTeleph_num(),
-                        patient.getWard(),
-                        patient.getDoctorId(), newNurse);
-        patientRepository.deleteById(patient.getId());
-        patientRepository.save(patient1);
-        return patient1;
-    }
-
-    //metod za promnena na oddelenie na pacientot
     @Override
     public Patient changeWard(PatientId id, String ward) {
         Patient patient=patientRepository.findById(id)
                 .orElseThrow(PatientNotFoundException::new);
         Ward ward1=new Ward(ward);
-        Patient patient1=
-                Patient.build(patient.getName(),
-                        patient.getAddress(),
-                        patient.getTeleph_num(),
-                        ward1,
-                        patient.getDoctorId(), patient.getNurseId());
-        patientRepository.deleteById(id);
-        patientRepository.save(patient1);
-        return patient1;
+        patient.changeWard(ward1);
+        patientRepository.saveAndFlush(patient);
+        return patient;
     }
+
 }

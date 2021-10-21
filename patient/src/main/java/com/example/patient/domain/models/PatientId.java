@@ -19,6 +19,10 @@ public class PatientId extends DomainObjectId{
         return p;
     }
 
+    public static PatientId convertByString (String id){
+        PatientId newid=new PatientId(id);
+        return newid;
+    }
 
 
 }

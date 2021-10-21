@@ -15,9 +15,12 @@ import java.util.List;
 @Getter
 public class Nurse extends AbstractEntity<NurseId> {
 
+    //atributi na entitetot sestra: ime,plata, i oddelenie na koe raboti
+
     private String name;
     private int salary;
     private Ward ward;
+
 
     public Nurse(){
         super(NurseId.randomId(NurseId.class));

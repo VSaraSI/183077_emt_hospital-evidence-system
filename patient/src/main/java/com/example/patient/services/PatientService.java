@@ -10,12 +10,16 @@ import java.util.List;
 
 public interface PatientService {
 
+    //metodi za listanje na site pacienti, pronaogjanje na odreden pacient,
+    //dodavanje i brishenje
     List<Patient> getAll();
-    Patient findById(PatientId id);
-    Patient addPatient(PatientForm form);
-    void deletePatient(PatientId id);
-    Patient changeDoctor(PatientId id, DoctorId newDoctor);
-    Patient changeNurse(PatientId id, NurseId newNurse);
+    <Optional>Patient findById(String id);
+    <Optional>Patient addPatient(PatientForm form);
+    void deletePatient(String id);
+
+    //ovie metodi se koristat za promena na doktor i/ili sestra i promena na oddelenie
+    //na vekje postoecki pacient vo baza
+    Patient changeDoctorOrNurse(String id, PatientForm patientForm);
     Patient changeWard(PatientId id, String ward);
 
 }

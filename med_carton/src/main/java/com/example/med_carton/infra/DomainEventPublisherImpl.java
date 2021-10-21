@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DomainEventPublisherImpl implements DomainEventPublisher {
 
-    private final KafkaTemplate<String,String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
+
+    //metod so chija pomosh pravime publish (isprakjanje) na eventot koj se kreira vo
+    // med.karton i istiot treba da bide slushnat od kafka listener vo Patient za da
+    //nastanat soodvetnite promeni
     @Override
     public void publish(DomainEvent event) {
         this.kafkaTemplate.send(event.topic(),event.toJson());

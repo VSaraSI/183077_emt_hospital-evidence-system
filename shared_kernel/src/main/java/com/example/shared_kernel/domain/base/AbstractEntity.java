@@ -1,8 +1,10 @@
 package com.example.shared_kernel.domain.base;
 
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.NonNull;
+
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;

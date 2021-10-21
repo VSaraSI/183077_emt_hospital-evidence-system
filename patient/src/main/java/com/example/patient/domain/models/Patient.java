@@ -20,43 +20,44 @@ public class Patient extends AbstractEntity<PatientId> {
 
 
     //atributi na entitetot patient megju koj se i id-ata na Doctor i Nurse
-    //i na istite se pravi override za da ne nastane zabuna vo bazata
+    //i na istite se pravi override za da ne nastane zabuna vo bazata,
+    //bidejkji stanuva zbor za id-a od ist tip so isto ime
     private String name;
     private String address;
-    private String teleph_num;
+    private String telephone;
     private Ward ward;
 
-    @AttributeOverride(name = "id", column = @Column(name = "doctor_id", nullable = false))
+    @AttributeOverride(name = "id", column = @Column(name = "doctor_id"))
     private DoctorId doctorId;
 
-    @AttributeOverride(name = "id", column = @Column(name = "nurse_id", nullable = false))
+    @AttributeOverride(name = "id", column = @Column(name = "nurse_id"))
     private NurseId nurseId;
 
     public Patient(){
         super(PatientId.randomId(PatientId.class));
     }
 
-    public Patient(@NonNull DoctorId doctorId, @NonNull Ward ward,@NonNull NurseId nurseId, String name, String address, String teleph_num) {
+    public Patient(String name,String address, String telephone, Ward ward, DoctorId doctorId, NurseId nurseId) {
         super(DomainObjectId.randomId(PatientId.class));
-        this.doctorId =doctorId;
-        this.nurseId=nurseId;
         this.ward=ward;
         this.name=name;
         this.address=address;
-        this.teleph_num=teleph_num;
+        this.telephone=telephone;
+        this.doctorId=doctorId;
+        this.nurseId=nurseId;
     }
 
+    //metodi za promena na oddlenie,doktor i sestra
+    public void changeWard(Ward ward) {
+        this.ward=ward;
+    }
 
+    public void changeDoctor(DoctorId doctorId){
+        this.doctorId=doctorId;
+    }
 
-    public static Patient build(String name, String address, String teleph_num,Ward ward,DoctorId doctorId, NurseId nurseId) {
-        Patient p = new Patient();
-        p.name=name;
-        p.address=address;
-        p.nurseId=nurseId;
-        p.teleph_num=teleph_num;
-        p.ward=ward;
-        p.doctorId=doctorId;
-        return p;
+    public void changeNurse(NurseId nurseId){
+        this.nurseId=nurseId;
     }
 
 

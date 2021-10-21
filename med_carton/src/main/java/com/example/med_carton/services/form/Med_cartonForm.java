@@ -1,22 +1,23 @@
 package com.example.med_carton.services.form;
 
-import com.example.med_carton.domain.Med_cartonId;
-import com.example.med_carton.domain.valueobjects.Patient;
 import com.example.med_carton.domain.valueobjects.PatientId;
 import com.example.shared_kernel.domain.ward.Ward;
+import com.sun.istack.NotNull;
 import lombok.Data;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import java.util.Date;
 
 @Data
 public class Med_cartonForm {
 
-    private Med_cartonId id;
+    //ovaa forma ja koristime za gi izvleceme podatocite za med.karton
+    //koj se kreira ili editira i potoa istite da gi vneseme vo bazata
+
+    @NotNull
     private String problem;
+
+    @NotNull
     private Ward ward;
-    private Date creationDate;
+
+    @NotNull
     private PatientId patientId;
 
 }

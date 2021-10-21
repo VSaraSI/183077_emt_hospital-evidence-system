@@ -15,5 +15,10 @@ public class NurseId extends DomainObjectId {
         super(uuid);
     }
 
+    public static NurseId of(String uuid) {
+        NurseId p = new NurseId(uuid);
+        return p;
+    }
+
 
 }

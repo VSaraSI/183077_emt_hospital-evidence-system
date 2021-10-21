@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import org.springframework.lang.NonNull;
 
+
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.UUID;
 

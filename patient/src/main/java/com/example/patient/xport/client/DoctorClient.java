@@ -1,6 +1,6 @@
-package com.example.med_carton.xport;
+package com.example.patient.xport.client;
 
-import com.example.med_carton.domain.valueobjects.Patient;
+import com.example.patient.domain.valueobjects.Doctor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -14,12 +14,12 @@ import java.util.List;
 
 
 @Service
-public class AdministrativeWorker {
+public class DoctorClient{
 
     private final RestTemplate restTemplate;
     private final String serverUrl;
 
-    public AdministrativeWorker(@Value("${app.patient.url}") String serverUrl) {
+    public DoctorClient(@Value("${app.doctor.url}") String serverUrl) {
         this.serverUrl = serverUrl;
         this.restTemplate = new RestTemplate();
         var requestFactory = new SimpleClientHttpRequestFactory();
@@ -30,9 +30,10 @@ public class AdministrativeWorker {
         return UriComponentsBuilder.fromUriString(this.serverUrl);
     }
 
-    public List<Patient> findAll() {
+    //so ovoj metod nie gi vlecheme site doktori koi se vo baza i se del od drug modul
+    public List<Doctor> findAll() {
         try {
-            return restTemplate.exchange(uri().path("/api/patient").build().toUri(), HttpMethod.GET,null, new ParameterizedTypeReference<List<Patient>>() {
+            return restTemplate.exchange(uri().path("/api/doctor").build().toUri(), HttpMethod.GET,null, new ParameterizedTypeReference<List<Doctor>>() {
             }).getBody();
         } catch (Exception e) {
             return Collections.emptyList();

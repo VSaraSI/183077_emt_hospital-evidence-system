@@ -14,18 +14,20 @@ import javax.persistence.Table;
 @Getter
 public class Doctor extends AbstractEntity<DoctorId>{
 
+    //atributi na entitetot doktor: ime,plata,kvalifikacija i oddelenie na koe raboti
 
-    //atributi na entitetot Doctor
     private String name;
     private int salary;
 
-    //enumeracija na kvalifikacija
     @Enumerated(EnumType.STRING)
     private Qualification qualification;
 
     private Ward ward;
 
-    //metod za gradenje na instanca od Doctor
+    public Doctor(){
+            super(DoctorId.randomId(DoctorId.class));
+    }
+
     public static Doctor build(String name, int salary, Qualification qualification, Ward ward) {
         Doctor doctor = new Doctor();
         doctor.name=name;
